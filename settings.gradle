@@ -1,0 +1,2 @@
+include ':app', ':news'
+rootProject.name='FGNews'
