@@ -3,7 +3,9 @@
     package="net.faithgen.news">
 
     <application>
-        <activity android:name=".NewsActivity"></activity>
+        <activity
+            android:name=".NewsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
