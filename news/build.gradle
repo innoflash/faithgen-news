@@ -41,4 +41,5 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828' //image lazyloader lib
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'org.itishka.gson-flatten:gson-flatten:0.8.1' //GSON helper
+    implementation 'com.github.rudsonlive:searchliveo:1.1.2' //search library
 }
