@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -28,4 +32,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(':news')
     implementation 'com.github.faithgen:android-sdk:v1.0.1' //faithgen SDK
+    implementation 'com.android.support:multidex:1.0.3' //dex fixer
+    implementation 'com.github.innoflash:iOSViews:6b8527d4b6' //iOSViews (custom)
+    implementation 'com.squareup.picasso:picasso:2.71828' //image lazyloader lib
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'org.itishka.gson-flatten:gson-flatten:0.8.1' //GSON helper
 }
