@@ -17,6 +17,7 @@ public class TheApp extends Application {
         try {
             SDK.initializeThemeColor(getResources().getString(R.color.colorPrimaryDark));
             SDK.initializeSDK(this, this.getAssets().open("config.json"), MenuChoice.CONTEXTUAL_MENU, Subscription.Premium);
+            SDK.initializeApiBase("http://192.168.8.101:8001/api/");
         } catch (IOException e) {
             e.printStackTrace();
         }
