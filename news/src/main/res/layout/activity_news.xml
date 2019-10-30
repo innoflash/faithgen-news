@@ -12,6 +12,7 @@
         android:id="@+id/search_liveo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:searchLiveoHint="@string/search_news" />
 
     <androidx.cardview.widget.CardView
@@ -36,6 +37,7 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:id="@+id/newsList"
             android:layout_height="wrap_content"/>

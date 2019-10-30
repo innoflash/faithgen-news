@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">news</string>
-    <string name="search_news">Search news</string>
-    <string name="no_news">There is no news posted as yet!</string>
+    <string name="app_name">articles</string>
+    <string name="search_news">Search articles</string>
+    <string name="no_news">There is no articles posted as yet!</string>
+    <string name="title_activity_article">Article</string>
+    <string name="loadings">idfhd kgfhg fgjkfhd gjkfghf dgjfhdg jkfdhgfd g</string>
 </resources>

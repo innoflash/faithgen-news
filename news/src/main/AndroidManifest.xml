@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.faithgen.news">
+    package="net.faithgen.articles">
 
     <application>
         <activity
-            android:name=".NewsActivity"
+            android:name="net.faithgen.news.ArticleActivity"
+            android:label="@string/title_activity_article"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.faithgen.news.NewsActivity" />
+        </activity>
+        <activity
+            android:name="net.faithgen.news.NewsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

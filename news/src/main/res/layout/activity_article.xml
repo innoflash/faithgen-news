@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".ArticleActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dimen10"
+        android:paddingRight="@dimen/dimen10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen10"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/dimen10">
+
+            <ImageView
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/news_512" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <View
+                    android:layout_width="@dimen/dimen5"
+                    android:layout_height="match_parent"
+                    android:background="@color/ios_blue" />
+
+                <TextView
+                    android:id="@+id/summary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-condensed-light"
+                    android:paddingLeft="@dimen/dimen15"
+                    android:paddingTop="@dimen/dimen3"
+                    android:paddingBottom="@dimen/dimen3"
+                    android:text="@string/loading" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-smallcaps"
+                android:padding="@dimen/dimen10"
+                android:text="@string/loadings"
+                android:textSize="@dimen/text25" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <View
+                    android:layout_width="@dimen/dimen5"
+                    android:layout_height="match_parent"
+                    android:background="@color/ios_green" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-condensed-light"
+                    android:paddingLeft="@dimen/dimen15"
+                    android:paddingTop="@dimen/dimen3"
+                    android:paddingBottom="@dimen/dimen3"
+                    android:text="@string/loading" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            style="@style/detail_cards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/news"
+                style="@style/helvetica_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/loading" />
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</ScrollView>

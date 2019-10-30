@@ -1,15 +1,18 @@
 package net.faithgen.news;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import net.faithgen.articles.R;
+import net.faithgen.news.models.Article;
 import net.faithgen.news.models.News;
-import net.faithgen.news.models.NewsData;
 import net.faithgen.sdk.FaithGenActivity;
 import net.faithgen.sdk.http.API;
 import net.faithgen.sdk.http.ErrorResponse;
@@ -31,13 +34,15 @@ public class NewsActivity extends FaithGenActivity implements RecyclerViewClickL
     private SearchLiveo searchLiveo;
     private String filterText = "";
     private HashMap<String, String> params;
-    private NewsData newsData;
-    private List<News> news;
+    private News news;
+    private List<Article> articles;
     private Pagination pagination;
     private NewsAdapter newsAdapter;
     private RecyclerView newsListView;
     private SwipeRefreshLayout newsSwiper;
     private CardView statusCard;
+    private Intent intent;
+
 
     @Override
     public String getPageTitle() {
@@ -68,19 +73,24 @@ public class NewsActivity extends FaithGenActivity implements RecyclerViewClickL
         params = new HashMap<>();
 
         searchLiveo = findViewById(R.id.search_liveo);
-        searchLiveo.with(this)
+        searchLiveo.with(this, charSequence -> {
+            filterText = (String) charSequence;
+            loadNews(Constants.NEWS_ROUTE, true);
+        })
                 .showVoice()
                 .hideKeyboardAfterSearch()
-                .with(this, charSequence -> {
-                    filterText = (String) charSequence;
-                })
                 .hideSearch(() -> {
                     getToolbar().setVisibility(View.VISIBLE);
-                    searchLiveo.text("");
+                    if (!filterText.isEmpty()) {
+                        filterText = "";
+                        searchLiveo.text(filterText);
+                        loadNews(Constants.NEWS_ROUTE, true);
+                    }
                 })
                 .build();
 
         setOnOptionsClicked(R.drawable.ic_search_black_24dp, view -> {
+            searchLiveo.setVisibility(View.VISIBLE);
             searchLiveo.show();
             getToolbar().setVisibility(View.GONE);
         });
@@ -90,27 +100,29 @@ public class NewsActivity extends FaithGenActivity implements RecyclerViewClickL
     @Override
     protected void onStart() {
         super.onStart();
-        loadNews(Constants.NEWS_ROUTE);
+        if (news == null)
+            loadNews(Constants.NEWS_ROUTE, true);
     }
 
-    private void loadNews(String url) {
+    private void loadNews(String url, boolean reload) {
         params.put(Constants.FILTER_TEXT, filterText);
         API.get(NewsActivity.this, url, params, pagination == null, new ServerResponse() {
             @Override
             public void onServerResponse(String serverResponse) {
-                newsData = GSONSingleton.getInstance().getGson().fromJson(serverResponse, NewsData.class);
+                news = GSONSingleton.getInstance().getGson().fromJson(serverResponse, News.class);
                 pagination = GSONSingleton.getInstance().getGson().fromJson(serverResponse, Pagination.class);
 
-                if (news == null || news.size() == 0) {
-                    news = newsData.getNews();
-                    newsAdapter = new NewsAdapter(NewsActivity.this, news);
+                if (reload || articles == null || articles.size() == 0) {
+                    articles = news.getArticles();
+                    newsAdapter = new NewsAdapter(NewsActivity.this, articles);
                     newsListView.setAdapter(newsAdapter);
-                    statusCard.setVisibility(View.VISIBLE);
                 } else {
-                    statusCard.setVisibility(View.GONE);
-                    news.addAll(newsData.getNews());
+                    articles.addAll(news.getArticles());
                     newsAdapter.notifyDataSetChanged();
                 }
+
+                if (articles.size() == 0) statusCard.setVisibility(View.VISIBLE);
+                else statusCard.setVisibility(View.GONE);
             }
 
             @Override
@@ -122,7 +134,9 @@ public class NewsActivity extends FaithGenActivity implements RecyclerViewClickL
 
     @Override
     public void onClick(View view, int position) {
-
+        intent = new Intent(this, ArticleActivity.class);
+        intent.putExtra(Article.ID, articles.get(position).getId());
+        startActivity(intent);
     }
 
     @Override
@@ -134,6 +148,16 @@ public class NewsActivity extends FaithGenActivity implements RecyclerViewClickL
     public void onRefresh() {
         if (pagination == null || pagination.getLinks().getNext() == null)
             newsSwiper.setRefreshing(false);
-        else loadNews(pagination.getLinks().getNext());
+        else loadNews(pagination.getLinks().getNext(), false);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            if (requestCode == SearchLiveo.REQUEST_CODE_SPEECH_INPUT) {
+                searchLiveo.resultVoice(requestCode, resultCode, data);
+            }
+        }
     }
 }

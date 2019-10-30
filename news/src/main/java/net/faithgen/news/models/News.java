@@ -2,51 +2,17 @@ package net.faithgen.news.models;
 
 import org.itishka.gsonflatten.Flatten;
 
+import java.util.List;
+
 public class News {
-    private String id;
-    private String title;
-    private Date date;
-    private Avatar avatar;
-    @Flatten("comments::count")
-    private int commentsCount;
+    @Flatten("data")
+    private List<Article> articles;
 
-    public String getId() {
-        return id;
+    public List<Article> getArticles() {
+        return articles;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Avatar getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(Avatar avatar) {
-        this.avatar = avatar;
-    }
-
-    public int getCommentsCount() {
-        return commentsCount;
-    }
-
-    public void setCommentsCount(int commentsCount) {
-        this.commentsCount = commentsCount;
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
     }
 }
