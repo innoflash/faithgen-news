@@ -71,7 +71,7 @@ public class ArticleActivity extends FaithGenActivity {
                             SDK.getMinistry().getName() + "\n\nDate : " +
                             Html.escapeHtml(article.getNews()) + "\n\n" +
                             "Link : http://articlelink \n";
-                    //todo share text
+                    Utils.shareText(ArticleActivity.this, message, "Article");
                     break;
                 case 1:
                     //todo open comments
@@ -113,4 +113,5 @@ public class ArticleActivity extends FaithGenActivity {
             news.setText(Html.fromHtml(article.getNews()));
         }
     }
+
 }

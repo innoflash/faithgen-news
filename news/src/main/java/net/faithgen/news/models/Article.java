@@ -1,5 +1,8 @@
 package net.faithgen.news.models;
 
+import net.faithgen.sdk.models.Avatar;
+import net.faithgen.sdk.models.Date;
+
 import org.itishka.gsonflatten.Flatten;
 
 public class Article {
