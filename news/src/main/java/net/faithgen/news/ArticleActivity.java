@@ -11,6 +11,7 @@ import net.faithgen.articles.R;
 import net.faithgen.news.models.Article;
 import net.faithgen.sdk.FaithGenActivity;
 import net.faithgen.sdk.SDK;
+import net.faithgen.sdk.comments.CommentsSettings;
 import net.faithgen.sdk.http.API;
 import net.faithgen.sdk.http.ErrorResponse;
 import net.faithgen.sdk.http.types.ServerResponse;
@@ -74,7 +75,11 @@ public class ArticleActivity extends FaithGenActivity {
                     Utils.shareText(ArticleActivity.this, message, "Article");
                     break;
                 case 1:
-                    //todo open comments
+                    SDK.openComments(ArticleActivity.this, new CommentsSettings.Builder()
+                            .setTitle(article.getTitle())
+                            .setItemId(articleId)
+                            .setCategory("news/")
+                            .build());
                     break;
             }
         });
