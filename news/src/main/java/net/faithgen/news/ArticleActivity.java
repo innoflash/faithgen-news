@@ -12,8 +12,8 @@ import net.faithgen.news.models.Article;
 import net.faithgen.sdk.FaithGenActivity;
 import net.faithgen.sdk.SDK;
 import net.faithgen.sdk.comments.CommentsSettings;
-import net.faithgen.sdk.http.API;
 import net.faithgen.sdk.http.ErrorResponse;
+import net.faithgen.sdk.http.FaithGenAPI;
 import net.faithgen.sdk.http.types.ServerResponse;
 import net.faithgen.sdk.menu.Menu;
 import net.faithgen.sdk.menu.MenuFactory;
@@ -36,6 +36,7 @@ public class ArticleActivity extends FaithGenActivity {
     private TextView news;
     private Menu menu;
     private List<MenuItem> menuItems;
+    private FaithGenAPI faithGenAPI;
 
     @Override
     public String getPageTitle() {
@@ -47,6 +48,7 @@ public class ArticleActivity extends FaithGenActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
+        faithGenAPI = new FaithGenAPI(this);
         articleId = getIntent().getStringExtra(Constants.ID);
 
         banner = findViewById(R.id.banner);
@@ -90,7 +92,13 @@ public class ArticleActivity extends FaithGenActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        API.get(this, Constants.NEWS_ROUTE + "/" + articleId, null, true, new ServerResponse() {
+        faithGenAPI
+                .setProcess(Constants.OPENING_ARTICLE)
+                .request(Constants.NEWS_ROUTE + "/" + articleId);
+    }
+
+    private ServerResponse getServerResponse() {
+        return new ServerResponse() {
             @Override
             public void onServerResponse(String serverResponse) {
                 article = GSONSingleton.Companion.getInstance().getGson().fromJson(serverResponse, Article.class);
@@ -101,7 +109,13 @@ public class ArticleActivity extends FaithGenActivity {
             public void onError(ErrorResponse errorResponse) {
                 Dialogs.showOkDialog(ArticleActivity.this, errorResponse.getMessage(), true);
             }
-        });
+        };
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        faithGenAPI.cancelRequests();
     }
 
     private void renderArticle() {
