@@ -47,7 +47,7 @@ public class ArticleActivity extends FaithGenActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
-        articleId = getIntent().getStringExtra(Article.ID);
+        articleId = getIntent().getStringExtra(Constants.ID);
 
         banner = findViewById(R.id.banner);
         summary = findViewById(R.id.summary);
@@ -72,7 +72,7 @@ public class ArticleActivity extends FaithGenActivity {
                             SDK.getMinistry().getName() + "\n\nDate : " +
                             Html.escapeHtml(article.getNews()) + "\n\n" +
                             "Link : http://articlelink \n";
-                    Utils.shareText(ArticleActivity.this, message, "Article");
+                    Utils.INSTANCE.shareText(ArticleActivity.this, message, "Article");
                     break;
                 case 1:
                     SDK.openComments(ArticleActivity.this, new CommentsSettings.Builder()
@@ -93,7 +93,7 @@ public class ArticleActivity extends FaithGenActivity {
         API.get(this, Constants.NEWS_ROUTE + "/" + articleId, null, true, new ServerResponse() {
             @Override
             public void onServerResponse(String serverResponse) {
-                article = GSONSingleton.getInstance().getGson().fromJson(serverResponse, Article.class);
+                article = GSONSingleton.Companion.getInstance().getGson().fromJson(serverResponse, Article.class);
                 renderArticle();
             }
 

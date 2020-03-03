@@ -109,8 +109,8 @@ public class NewsActivity extends FaithGenActivity implements RecyclerViewClickL
         API.get(NewsActivity.this, url, params, pagination == null, new ServerResponse() {
             @Override
             public void onServerResponse(String serverResponse) {
-                news = GSONSingleton.getInstance().getGson().fromJson(serverResponse, News.class);
-                pagination = GSONSingleton.getInstance().getGson().fromJson(serverResponse, Pagination.class);
+                news = GSONSingleton.Companion.getInstance().getGson().fromJson(serverResponse, News.class);
+                pagination = GSONSingleton.Companion.getInstance().getGson().fromJson(serverResponse, Pagination.class);
 
                 if (reload || articles == null || articles.size() == 0) {
                     articles = news.getArticles();
@@ -135,7 +135,7 @@ public class NewsActivity extends FaithGenActivity implements RecyclerViewClickL
     @Override
     public void onClick(View view, int position) {
         intent = new Intent(this, ArticleActivity.class);
-        intent.putExtra(Article.ID, articles.get(position).getId());
+        intent.putExtra(Constants.ID, articles.get(position).getId());
         startActivity(intent);
     }
 

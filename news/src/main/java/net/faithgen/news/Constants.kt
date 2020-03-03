@@ -8,4 +8,5 @@ object Constants {
     const val SHARE = "Share"
     const val COMMENT = "Comment"
     const val ARTICLE_OPTIONS = "Article Options"
+    const val ID = "id"
 }
