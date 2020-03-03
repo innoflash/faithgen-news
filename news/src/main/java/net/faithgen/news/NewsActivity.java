@@ -14,8 +14,8 @@ import net.faithgen.articles.R;
 import net.faithgen.news.models.Article;
 import net.faithgen.news.models.News;
 import net.faithgen.sdk.FaithGenActivity;
-import net.faithgen.sdk.http.API;
 import net.faithgen.sdk.http.ErrorResponse;
+import net.faithgen.sdk.http.FaithGenAPI;
 import net.faithgen.sdk.http.Pagination;
 import net.faithgen.sdk.http.types.ServerResponse;
 import net.faithgen.sdk.singletons.GSONSingleton;
@@ -42,7 +42,7 @@ public class NewsActivity extends FaithGenActivity implements RecyclerViewClickL
     private SwipeRefreshLayout newsSwiper;
     private CardView statusCard;
     private Intent intent;
-
+    private FaithGenAPI faithGenAPI;
 
     @Override
     public String getPageTitle() {
@@ -58,6 +58,8 @@ public class NewsActivity extends FaithGenActivity implements RecyclerViewClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+
+        faithGenAPI = new FaithGenAPI(this);
 
         newsSwiper = findViewById(R.id.newsSwiper);
         newsListView = findViewById(R.id.newsList);
@@ -104,9 +106,14 @@ public class NewsActivity extends FaithGenActivity implements RecyclerViewClickL
             loadNews(Constants.NEWS_ROUTE, true);
     }
 
-    private void loadNews(String url, boolean reload) {
-        params.put(Constants.FILTER_TEXT, filterText);
-        API.get(NewsActivity.this, url, params, pagination == null, new ServerResponse() {
+    @Override
+    protected void onStop() {
+        super.onStop();
+        faithGenAPI.cancelRequests();
+    }
+
+    private ServerResponse getServerResponse(boolean reload) {
+        return new ServerResponse() {
             @Override
             public void onServerResponse(String serverResponse) {
                 news = GSONSingleton.Companion.getInstance().getGson().fromJson(serverResponse, News.class);
@@ -129,7 +136,16 @@ public class NewsActivity extends FaithGenActivity implements RecyclerViewClickL
             public void onError(ErrorResponse errorResponse) {
                 Dialogs.showOkDialog(NewsActivity.this, errorResponse.getMessage(), pagination == null);
             }
-        });
+        };
+    }
+
+    private void loadNews(String url, boolean reload) {
+        params.put(Constants.FILTER_TEXT, filterText);
+        faithGenAPI
+                .setParams(params)
+                .setProcess(Constants.FETCHING_ARTICLES)
+                .setServerResponse(getServerResponse(reload))
+                .request(url);
     }
 
     @Override

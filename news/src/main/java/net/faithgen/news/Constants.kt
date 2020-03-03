@@ -9,4 +9,5 @@ object Constants {
     const val COMMENT = "Comment"
     const val ARTICLE_OPTIONS = "Article Options"
     const val ID = "id"
+    const val FETCHING_ARTICLES = "Fetching articles..."
 }
