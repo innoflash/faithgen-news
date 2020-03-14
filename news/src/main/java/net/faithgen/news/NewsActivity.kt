@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.liveo.searchliveo.SearchLiveo
 import kotlinx.android.synthetic.main.activity_news.*
 import net.faithgen.articles.R
 import net.faithgen.news.models.Article
@@ -64,6 +65,7 @@ class NewsActivity : FaithGenActivity(), RecyclerViewClickListener, SwipeRefresh
                         loadNews(Constants.NEWS_ROUTE, true)
                     }
                 }.build()
+
         setOnOptionsClicked(R.drawable.ic_search_black_24dp) {
             search_liveo.visibility = View.VISIBLE
             search_liveo.show()
@@ -125,5 +127,14 @@ class NewsActivity : FaithGenActivity(), RecyclerViewClickListener, SwipeRefresh
         if (pagination == null || pagination!!.links.next.isNullOrBlank())
             newsSwiper.isRefreshing = false
         else loadNews(pagination!!.links.next, false)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data != null) {
+            if (requestCode == SearchLiveo.REQUEST_CODE_SPEECH_INPUT) {
+                search_liveo.resultVoice(requestCode, resultCode, data)
+            }
+        }
     }
 }
