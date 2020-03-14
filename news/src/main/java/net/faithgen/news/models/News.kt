@@ -7,5 +7,5 @@ import com.google.gson.annotations.SerializedName
  */
 final data class News(
         @SerializedName("news")
-        val articles: List<Article>
+        val articles: MutableList<Article>
 )
